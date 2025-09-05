@@ -1,0 +1,9 @@
+{
+  "expo": {
+    "name": "AI Job Finder",
+    "slug": "ai-job-finder",
+    "version": "1.0.0",
+    "platforms": ["ios", "android", "web"],
+    "assetBundlePatterns": ["**/*"]
+  }
+}
