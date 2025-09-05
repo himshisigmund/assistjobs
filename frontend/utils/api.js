@@ -1,11 +1,15 @@
-// Replace example URL with your actual backend endpoint
-const API_URL = "https://your-backend.com/api/jobs";
+const API_URL = "https://remotive.com/api/remote-jobs";
 
 export async function fetchJobs(query) {
   try {
-    const resp = await fetch(`${API_URL}?q=${encodeURIComponent(query)}`);
+    const url = query
+      ? `${API_URL}?search=${encodeURIComponent(query)}`
+      : API_URL;
+    const resp = await fetch(url);
     if (!resp.ok) throw new Error("Failed to fetch jobs");
-    return await resp.json();
+    const data = await resp.json();
+    // Remotive returns jobs in data.jobs
+    return data.jobs || [];
   } catch (error) {
     throw error;
   }
