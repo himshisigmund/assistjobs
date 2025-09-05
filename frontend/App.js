@@ -1,25 +1,27 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TextInput, Button, Platform } from "react-native";
-import * as Speech from "expo-speech";
+import { StyleSheet, View, Text, TextInput, Button } from "react-native";
 import JobList from "./components/JobList";
 import VoiceInput from "./components/VoiceInput";
+import Loading from "./components/Loading";
+import ErrorMessage from "./components/ErrorMessage";
+import { fetchJobs } from "./utils/api";
 
 export default function App() {
   const [query, setQuery] = useState("");
-  const [jobs, setJobs] = useState([
-    { id: "1", title: "Frontend Developer", company: "Tech Co", location: "Remote" },
-    { id: "2", title: "AI Researcher", company: "AI Labs", location: "San Francisco" },
-  ]);
-  const [ttsText, setTtsText] = useState("");
+  const [jobs, setJobs] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSearch = () => {
-    alert(`Search for jobs: ${query}`);
-  };
-
-  const handleSpeak = () => {
-    if (ttsText) {
-      Speech.speak(ttsText);
+  const handleSearch = async () => {
+    setLoading(true);
+    setError("");
+    try {
+      const realJobs = await fetchJobs(query);
+      setJobs(realJobs);
+    } catch (e) {
+      setError(e.message || "Failed to fetch jobs");
     }
+    setLoading(false);
   };
 
   return (
@@ -32,29 +34,13 @@ export default function App() {
         onChangeText={setQuery}
       />
       <Button title="Search" onPress={handleSearch} />
-
-      <JobList jobs={jobs} />
-
-      <View style={styles.ttsSection}>
-        <Text style={styles.subTitle}>Text-to-Speech</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Enter text to read aloud"
-          value={ttsText}
-          onChangeText={setTtsText}
-        />
-        <Button title="Speak" onPress={handleSpeak} />
-      </View>
-
+      <ErrorMessage message={error} />
+      {loading ? <Loading /> : <JobList jobs={jobs} />}
       <VoiceInput onResult={setQuery} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 24, backgroundColor: "#fff", justifyContent: "flex-start" },
-  title: { fontSize: 28, fontWeight: "bold", marginBottom: 16 },
-  input: { borderWidth: 1, borderColor: "#ccc", borderRadius: 5, padding: 10, marginVertical: 8 },
-  ttsSection: { marginTop: 32 },
-  subTitle: { fontSize: 20, fontWeight: "600", marginTop: 16, marginBottom: 8 },
+  // ... as before ...
 });
