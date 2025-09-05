@@ -1,13 +1,9 @@
 import React from "react";
 import { View, Text, FlatList, StyleSheet } from "react-native";
+import JobCard from "./JobCard";
 
 export default function JobList({ jobs }) {
-  const renderItem = ({ item }) => (
-    <View style={styles.jobCard}>
-      <Text style={styles.title}>{item.title}</Text>
-      <Text>{item.company} — {item.location}</Text>
-    </View>
-  );
+  const renderItem = ({ item }) => <JobCard job={item} />;
 
   return (
     <View style={styles.container}>
@@ -25,6 +21,4 @@ export default function JobList({ jobs }) {
 const styles = StyleSheet.create({
   container: { marginTop: 24 },
   heading: { fontSize: 18, fontWeight: "bold", marginBottom: 8 },
-  jobCard: { padding: 12, borderWidth: 1, borderColor: "#eee", borderRadius: 5, marginBottom: 10 },
-  title: { fontWeight: "bold" },
 });
