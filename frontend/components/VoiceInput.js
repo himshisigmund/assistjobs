@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Button, Text, Platform } from "react-native";
+import { View, Button, Text, Platform, TouchableOpacity, StyleSheet } from "react-native";
 
 // Web: Use browser SpeechRecognition API
 const useSpeechRecognitionWeb = (onResult) => {
@@ -32,16 +32,48 @@ export default function VoiceInput({ onResult }) {
   if (Platform.OS === "web") {
     const { listening, startListening } = useSpeechRecognitionWeb(onResult);
     return (
-      <View style={{ marginTop: 32 }}>
-        <Text style={{ fontWeight: "bold" }}>Voice Search (Web Only)</Text>
-        <Button title={listening ? "Listening..." : "Start Voice Input"} onPress={startListening} disabled={listening} />
+      <View style={styles.voiceRow}>
+        <TouchableOpacity style={styles.voiceBtn} onPress={startListening} disabled={listening}>
+          <Text style={styles.voiceBtnText}>
+            {listening ? "Listening..." : "🎤 Voice Search"}
+          </Text>
+        </TouchableOpacity>
       </View>
     );
   }
 
   return (
-    <View style={{ marginTop: 32 }}>
-      <Text style={{ color: "gray" }}>Voice input not implemented on mobile yet.</Text>
+    <View style={{ marginTop: 8 }}>
+      <Text style={{ color: "#90a4ae", fontSize: 13 }}>Voice input is only available on web.</Text>
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  voiceRow: {
+    marginBottom: 6,
+    alignItems: "flex-end",
+  },
+  voiceBtn: {
+    backgroundColor: "#f1f5f9",
+    borderRadius: 8,
+    paddingVertical: 7,
+    paddingHorizontal: 15,
+    marginTop: 2,
+    marginBottom: 6,
+    alignSelf: "flex-end",
+    borderWidth: 1,
+    borderColor: "#dbeafe",
+    shadowColor: "#000",
+    shadowOpacity: 0.07,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 3,
+    elevation: 2,
+  },
+  voiceBtnText: {
+    color: "#2563eb",
+    fontWeight: "bold",
+    fontSize: 15,
+    letterSpacing: 0.2,
+  },
+});
