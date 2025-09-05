@@ -1,3 +1,4 @@
+// Uses Remotive API for real job data
 const API_URL = "https://remotive.com/api/remote-jobs";
 
 export async function fetchJobs(query) {
