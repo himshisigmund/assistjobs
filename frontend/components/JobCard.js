@@ -1,27 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Linking, Button } from "react-native";
 
 export default function JobCard({ job }) {
   return (
     <View style={styles.card}>
       <Text style={styles.title}>{job.title}</Text>
-      <Text style={styles.company}>{job.company}</Text>
-      <Text style={styles.location}>{job.location}</Text>
-      {/* Optionally add more fields like description, salary, etc. */}
+      <Text style={styles.company}>{job.company_name}</Text>
+      <Text style={styles.location}>{job.candidate_required_location}</Text>
+      <Text numberOfLines={3} style={styles.desc}>{job.description.replace(/<[^>]+>/g, '')}</Text>
+      <Button title="View Job" onPress={() => Linking.openURL(job.url)} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
-    padding: 14,
-    marginVertical: 8,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    backgroundColor: "#fafafa",
-  },
-  title: { fontWeight: "bold", fontSize: 18 },
-  company: { color: "#444", marginTop: 2 },
-  location: { color: "#888", marginTop: 2 },
+  // ... as before ...
+  desc: { marginTop: 6, color: "#555" },
 });
